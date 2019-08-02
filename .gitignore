@@ -4,6 +4,8 @@
 
 # Build
 *.egg-info
+build
+dist
 
 # IDE droppings
 .idea
