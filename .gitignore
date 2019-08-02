@@ -1,0 +1,16 @@
+# Ancient recipes
+*/old.py
+*/test_old.py
+
+# Build
+*.egg-info
+
+# IDE droppings
+.idea
+
+# Python droppings
+__pycache__
+*.pyc
+
+# MacOS droppings
+.DS_Store
