@@ -28,12 +28,37 @@ class TestDateParser(unittest.TestCase):
                     expected_day = pendulum.parse(str(day))
                 expected = pendulum.period(expected_day,
                                            expected_day.end_of('day'))
-                actual = self.parser(day.format(fmt))
+                actual = self.parser(day.format(fmt), False)
 
                 self.assertEqual(expected, actual,
                                  f'fmt = {fmt}, '
                                  f'fmt_str = {day}, '
                                  f'fmtted = {expected_day.format(fmt)}')
+
+    def test_months(self):
+        """
+        Go through the entire year. For plain months, the current year is
+        returned
+        """
+        start = pendulum.datetime(year=CURRENT_YEAR, month=1, day=1)
+        end = start.end_of('year')
+
+        for start_of_month in pendulum.period(start, end).range('months'):
+            month = arbitrary_dateparser.MONTH_NAMES[start_of_month.month - 1]
+
+            expected_raw = pendulum.period(start_of_month, start_of_month.end_of('month'))
+            actual_full_raw = self.parser(month)
+            actual_abbreviated_raw = self.parser(month[:3])
+
+            # TODO: Stop cheating to ignore timezones and fix them in test.
+            expected = (expected_raw.start.day_of_year, expected_raw.end.day_of_year)
+            actual_full = (actual_full_raw.start.day_of_year, actual_full_raw.end.day_of_year)
+            actual_abbreviated = (actual_abbreviated_raw.start.day_of_year,
+                                  actual_abbreviated_raw.end.day_of_year)
+            self.assertEqual(expected, actual_full,
+                             f"For {month}, expected {expected} and got {actual_full}")
+            self.assertEqual(expected, actual_abbreviated,
+                             f"For {month[:3]}, expected {expected} and got {actual_abbreviated}")
 
     def test_period_phrases(self):
         expected_dates = self.parser.period_phrases

@@ -2,8 +2,8 @@
 Contains the DateParser module and relevant constants.
 """
 
-import re
 import calendar
+import re
 from itertools import product
 
 import pendulum
@@ -213,9 +213,15 @@ class DateParser:
             self.date_phrases[f'previous {month}'] = self.previous_month.subtract(
                 months=(i + 1) - self.previous_month.month)
             self.date_phrases[month] = self.this_month.add(
-                months=(i + 1) - self.this_month.month),
+                months=(i + 1) - self.this_month.month)
             self.date_phrases[f'this {month}'] = self.this_month.add(
                 months=(i + 1) - self.this_month.month)
+
+            for month_phrase in (f'next {month}', f'previous {month}',
+                                 month, f'this {month}'):
+                self.period_phrases[month_phrase] = pendulum.period(
+                    self.date_phrases[month_phrase],
+                    self.date_phrases[month_phrase].end_of('month'))
 
     def __call__(self, string, refresh=True):
         _unmodified_string = string
@@ -228,6 +234,9 @@ class DateParser:
 
         for f in self.period_transformations:
             string = f(string)
+
+        for word, replacement in self.replaced_words.items():
+            string = string.replace(word, replacement)
 
         try:
             return self.period_phrases[string]
