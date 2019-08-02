@@ -43,10 +43,13 @@ behavior as well.
   editable or development mode. Editable mode means that as you make changes 
   to your local code, you’ll only need to re-install if you change the 
   metadata about the project, such as its dependencies.
+  
 4) Change it!
+
 5) Test it!
   ```bash
   # Assumes you're in the arbitrary-dateparser directory
   python -m tests.test_dateparser
   ```
+ 
 6) Submit a pull request!
