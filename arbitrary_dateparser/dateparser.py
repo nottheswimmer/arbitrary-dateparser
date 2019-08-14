@@ -204,8 +204,8 @@ class DateParser:
                 self.date_phrases[day] = self.today
                 self.date_phrases[f'this {day}'] = self.today
             else:
-                self.date_phrases[day] = self.today.next()
-                self.date_phrases[f'this {day}'] = self.today.next()
+                self.date_phrases[day] = self.today.next(i)
+                self.date_phrases[f'this {day}'] = self.today.next(i)
 
         for i, month in enumerate(MONTH_NAMES_ABBREVIATED):
             self.date_phrases[f'next {month}'] = self.next_month.add(

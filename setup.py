@@ -10,7 +10,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='arbitrary-dateparser',
-    version='0.0.3',
+    version='0.0.4',
     packages=['arbitrary_dateparser'],
     zip_safe=False,
     python_requires='>=3, <4',
